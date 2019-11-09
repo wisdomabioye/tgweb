@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/plugins/file-storage/index.js"],"names":["SimpleFileStorage","FileStorage"],"mappings":";;;;;;;AAEA;;;;;;QACSA,iB;QACqBC,W","file":"index.js","sourcesContent":["//@flow\n\nimport SimpleFileStorage from './simple-file-storage'\nexport { SimpleFileStorage }\nexport { SimpleFileStorage as FileStorage }\n\nexport default SimpleFileStorage"]}

@@ -1,0 +1,30 @@
+# production
+dist
+.next
+out
+now.json
+dev.now.json
+prod.now.json
+.snyk
+.nowignore
+
+# dependencies
+node_modules
+package-lock.json
+yarn.lock
+!/yarn.lock
+test/node_modules
+
+# logs & pids
+*.log
+pids
+.env
+.babelrc
+nodemon
+# coverage
+.nyc_output
+coverage
+
+# test output
+test**
+.DS_Store
