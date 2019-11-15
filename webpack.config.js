@@ -1,6 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WorkerPlugin = require('worker-plugin');
+
 module.exports = {
 
   entry: {
@@ -44,13 +46,14 @@ module.exports = {
         test: /\.worker\.js$/,
         use: {
           loader: "worker-loader",
-          options: {fallback: false, inline: false}
+          // options: {fallback: false, inline: false}
         }
       }
     ]
   },
   // resolve: {extensions: [".js"]},
   plugins: [
+    // new WorkerPlugin({globalObject: "self"}),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       inject: true,
@@ -64,16 +67,6 @@ module.exports = {
       template: "./src/signin.html",
       inject: true,
       chunks: ["signin"],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: "signup.html",
-      template: "./src/signup.html",
-      inject: true,
-      chunks: ["signup"],
       minify: {
         removeComments: true,
         collapseWhitespace: true,

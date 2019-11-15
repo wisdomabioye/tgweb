@@ -3,7 +3,7 @@
 var { pqPrimeFactorization, bytesModPow, sha1HashSync,
   aesEncryptSync, aesDecryptSync } = require('./bin');
 
-console.info('Crypto worker registered');
+// console.info('Crypto worker registered');
 
 var runTask = data => {
   switch (data.task) {
@@ -24,9 +24,9 @@ var runTask = data => {
 
 onmessage = function (e) {
   if (e.data === '') {
-    console.info('empty crypto task');
+    // console.info('empty crypto task');
   } else if (typeof e.data === 'string') {
-    console.info('crypto task string message', e.data);
+    // console.info('crypto task string message', e.data);
   } else {
     var taskID = e.data.taskID;
     var result = runTask(e.data);

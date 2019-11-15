@@ -1,7 +1,10 @@
+html { height: 100%; overflow: auto; }
 body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	/*font-size: 14px;*/
 	font-style: normal;
+	height: 100%;
+	overflow: auto;
 }
 
 p, h1, h2, h3, h4, h5, h6,
@@ -43,13 +46,25 @@ span, small, strong {
 }
 
 .fixed-input {
-	position: absolute;
-	bottom: 30px;
-	width: 100%;
+	position: -webkit-sticky;
+	position: sticky;
+	bottom: 20px;
 }
 
 .pointer:hover {
 	cursor: pointer;
+}
+
+.wrap-text {
+	word-wrap: break-word;
+	word-break: break-word;
+}
+.preserve-format {
+	 white-space: pre-wrap;
+}
+
+.fs-12 {
+	font-size: 14px;
 }
 
 .no-click {
@@ -63,6 +78,10 @@ span, small, strong {
 .image-centered {
 	display: block;
 	margin: auto;
+}
+
+.strong {
+	font-weight: bold;
 }
 .thin-text {
 	font-weight: lighter;
@@ -83,7 +102,7 @@ span, small, strong {
 }
 
 .bb-1 {
-	border-bottom: 1px solid #bbb; 
+	border-bottom: 1px solid #ddd; 
 }
 
 

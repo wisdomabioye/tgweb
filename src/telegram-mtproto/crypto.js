@@ -71,7 +71,7 @@ function _ref(e) {
   if (e.data === 'ready') {
     console.info('CW ready');
   } else if (!isCryptoTask(e.data)) {
-    console.info('Not crypto task', e, e.data);
+    // console.info('Not crypto task', e, e.data);
     return e;
   } else return webWorker ? finalizeTask(e.data.taskID, e.data.result) : webWorker = tmpWorker;
 }

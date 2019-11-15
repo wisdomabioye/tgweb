@@ -9,14 +9,33 @@
 	<link rel="stylesheet" href="assets/styles/main.css" />
 </head> 
 <body> 
-	<div class="container is-fullhd fixed-page-height mr-1 ml-1">
-		<div class="columns is-marginless is-paddingless">
+	<div class="container is-fullhd mr-1 ml-1">
+		<div class="columns is-marginless is-paddingless" style="height: 80px;">
 			<div class="column is-3 has-background-info">
 				<h2 class="has-text-light has-text-centered is-size-5">Telegram Web</h2>
 			</div>
-			<div class="column is-9 has-background-info">
-				<h2 class="has-text-light has-text-centered is-size-5">Current chat title</h2>
-				
+			<div class="column is-6 has-background-info has-text-light" id="selected-chat-header">
+				<h2 class="is-size-5" >Select a chat</h2>
+			</div>
+			<div class="column is-3 has-background-info">
+				<div class="dropdown is-hoverable">
+				  <div class="dropdown-trigger">
+				    <button class="button is-info is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+				      <span><img src="/assets/icons/menu_svg.svg"></span>
+				    </button>
+				  </div>
+				  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+				    <div class="dropdown-content">
+				      <a class="dropdown-item">
+				        Profile
+				      </a>
+				      <hr class="dropdown-divider">
+				      <a class="dropdown-item" id="signout">
+				        Sign out
+				      </a>
+				    </div>
+				  </div>
+				</div>
 			</div>
 			
 		</div>
@@ -31,87 +50,29 @@
 				</div>
 
 				<aside class="menu fixed-child-height overflow-auto mb-4 pb-4">
-					<ul class="menu-list is-size-4 mb-4 pb-4" id="chat-list">
-						<li class="mt-2 mb-2 bb-1"> 
-							<a>
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-						<li class="mt-2 mb-2 bb-1"> 
-							<a>
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-						<li class="mt-2 mb-2 bb-1"> 
-							<a class="is-active">
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-						<li class="mt-2 mb-2 bb-1"> 
-							<a>
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-						<li class="mt-2 mb-2 bb-1"> 
-							<a>
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-						<li class="mt-2 mb-2 bb-1"> 
-							<a>
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-						<li class="mt-2 mb-2 bb-1"> 
-							<a>
-								Chat list
-								<br/>
-								<small>
-								Chat excerpt Chat excerpt Chat excerpt</small>
-							</a>
-						</li>
-
-						
+					<ul class="menu-list" id="chat-list" style="padding-bottom: 80px;">
+						<li class="has-text-centered mt-4">Loading...</li>
 					</ul>
 				</aside>
 			</div>
-			<div class="column is-9 has-background-light fixed-child-height overflow-hidden" style="position: relative">
-				<div class="mt-1 mb-1 overflow-auto">
-					<h2 class="is-size-4">Chat messages</h2>
-					<h2 class="is-size-4">Chat messages</h2>
-					<h2 class="is-size-4">Chat messages</h2>
-					<h2 class="is-size-4">Chat messages</h2>
-					<h2 class="is-size-4">Chat messages</h2>
-					<h2 class="is-size-4">Chat messages</h2>
-				</div>
-				<div class="box fixed-input">
-					<div class="field has-addons">
-					  <div class="control">
-					    <input class="input" type="text" placeholder="Write a message">
-					  </div>
-					  <div class="control">
-					    <a class="button is-info">
-					      Send
-					    </a>
-					  </div>
+			<div class="column is-9 has-background-white fixed-child-height overflow-hidden">
+				<div class="fixed-child-height overflow-auto">
+					
+					<div class="mt-4 pt-4 pr-4 pl-4" style="padding-bottom: 60px;min-height: 70vh;" id="conversation-list">
+						<h2 class="is-size-4 has-text-grey has-text-centered mt-4">Select a chat</h2>
+					</div>
+
+					<div class="box fixed-input">
+						<div class="field has-addons">
+						  <div class="control" style="width: 100%">
+						    <input class="input" type="text" placeholder="Write a message" />
+						  </div>
+						  <div class="control">
+						    <a class="button is-info">
+						    	<img src="/assets/icons/send2_svg.svg">
+						    </a>
+						  </div>
+						</div>
 					</div>
 				</div>
 				

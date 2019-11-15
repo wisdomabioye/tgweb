@@ -1,11 +1,6 @@
-/* eslint-disable camelcase */
-
 const mtproto = require ('./telegram-mtproto').MTProto;
 
-// const mtproto = require ('telegram-mtproto').MTProto;
-// const {Storage} = require ('mtproto-storage-fs');
-
-const init = (apiId, name /*storageFolder = './storage'*/) => {
+const init = (apiId, name, storage) => {
 
     const api = {
         invokeWithLayer: 0xda9b0d0d,
@@ -18,11 +13,11 @@ const init = (apiId, name /*storageFolder = './storage'*/) => {
     
     const server = {
         webogram: true,
-        dev: true,
+        dev: false,
     };
 
     const app = {
-        // storage: new Storage (storageFolder + '/' + name + '.json')
+        storage: storage
     };
 
     return mtproto ({

@@ -88,3 +88,27 @@ export function underscoreCasedToSentence(str) {
 
 	return str[0].toUpperCase() + str.substring(1);
 }
+
+export function getSubstring(str, max) {
+    if (!str || typeof str !== "string") {
+        return str;
+    }
+
+    if (str.length > 40) {
+        return str.substring(0, max) + "...";
+    } else {
+        return str;
+    }
+}
+
+export function getPeerIcon(type) {
+    switch(type) {
+        case "user":
+            return "user";
+        case "channel":
+        case "chat":
+            return "group";
+        default:
+            return "info";
+    }
+}

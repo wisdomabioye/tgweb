@@ -21,38 +21,46 @@
 		<div class="column is-4 mt-4 mb-4 box">
 			
 			<div class="field signin mt-4 mb-4">
-			  <div class="control mb-4 mt-4">
-			    <input class="input phone-number" name="phonenumber" type="text" placeholder="Phone number e.g +23480111xxxx">
-			  </div>
-			  <p class="help is-danger"></p>
-			  <div class="control mb-4 is-pulled-right">
-				<button type="button" class="button is-small is-link">Next</button>
-			  </div>
+				<label class="label">Sign in</label>
+				<div class="control mb-4 mt-4">
+					<input class="input phone-number" name="phonenumber" type="text" placeholder="Phone number e.g +23480111xxxx">
+				</div>
+				<p class="help is-danger"></p>
+				<div class="control mb-4 is-pulled-right">
+					<button type="button" class="button is-small is-link">Next</button>
+				</div>
 			</div>
 
 			<div class="field auth-code mt-4 mb-4" style="display: none">
-			  <div class="control mt-4 mb-4">
-			    <input class="input login-code" name="logincode" type="text" placeholder="Login code">
-			  </div>
-			  <p class="help is-danger"></p>
-			  <div class="control mb-4 is-pulled-right">
-				<button type="button" class="button is-small is-link">Next</button>
-			  </div>
+				<label class="label">Confirm login code</label>
+				<div class="control mt-4 mb-4">
+					<input class="input login-code" name="logincode" type="text" placeholder="Login code">
+				</div>
+				<p class="help is-danger"></p>
+				<div class="control mb-4 is-pulled-right">
+					<button type="button" class="button is-small is-link">Next</button>
+				</div>
 			</div>
 
 			<div class="field signup mt-4 mb-4" style="display: none;">
-			  <div class="control mb-4 mt-4">
-			    <input class="input" name="firstname" type="text" placeholder="First name">
-			  </div>
-			  
-			  <div class="control mb-4 mt-4">
-			    <input class="input" name="lastname" type="text" placeholder="Last name">
-			  </div>
+				<label class="label">You need to sign up</label>
+				<div class="control mb-4 mt-4">
+					<input class="input" name="firstname" type="text" placeholder="First name">
+				</div>
 
-			  <p class="help is-danger"></p>
-			  <div class="control mb-4 is-pulled-right">
-				<button type="button" class="button is-small is-link">Next</button>
-			  </div>
+				<div class="control mb-4 mt-4">
+					<input class="input" name="lastname" type="text" placeholder="Last name">
+				</div>
+				<div class="control mb-4 mt-4">
+					<label class="checkbox">
+						<input name="tos" type="checkbox" />
+						I agree to the <a href="#!">terms and conditions</a>
+					</label>
+				</div>
+				<p class="help is-danger"></p>
+				<div class="control mb-4 is-pulled-right">
+					<button type="button" class="button is-small is-link">Next</button>
+				</div>
 			</div>
 		</div>
 	</div>
