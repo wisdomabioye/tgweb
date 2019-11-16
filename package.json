@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development -r dotenv/config",
     "dev": "webpack-dev-server --mode development -r dotenv/config",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "build:mtproto": "webpack --mode production --config webpack.mtproto.config.js"
   },
   "keywords": [
     "telegram",
@@ -22,7 +23,6 @@
     "bluebird": "^3.5.0",
     "debug": "^2.6.3",
     "detect-node": "^2.0.3",
-    "easy-telegram-mtproto": "^1.0.4",
     "eventemitter2": "^4.1.0",
     "localforage": "^1.7.3",
     "moment": "^2.24.0",
@@ -30,7 +30,7 @@
     "ramda": "^0.23.0",
     "randombytes": "^2.0.3",
     "rusha": "^0.8.5",
-    "telegram-mtproto": "^1.0.5"
+    "telegram-mtproto": "^2.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -69,6 +69,7 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.7.1",
     "worker-loader": "^2.0.0",
-    "worker-plugin": "^3.2.0"
+    "worker-plugin": "^3.2.0",
+    "workerize-loader": "^1.1.0"
   }
 }

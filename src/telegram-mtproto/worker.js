@@ -1,5 +1,4 @@
 'use strict';
-
 var { pqPrimeFactorization, bytesModPow, sha1HashSync,
   aesEncryptSync, aesDecryptSync } = require('./bin');
 

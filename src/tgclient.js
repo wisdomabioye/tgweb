@@ -1,6 +1,34 @@
-import Storage from "./storage";
-import {randomInt} from "./utils";
-import initTelegramMtproto from "./mproto.js";
+import localforage from "localforage";
+
+const randomInt = (minValue, maxValue) =>
+    minValue + Math.floor (Math.random () * (maxValue - minValue));
+
+const initTelegramMtproto = (mtproto, apiId, storage) => {
+
+    const api = {
+        invokeWithLayer: 0xda9b0d0d,
+        layer: 57,
+        initConnection: 0x69796de9,
+        api_id: apiId,
+        app_version: '1.0.1',
+        lang_code: 'en',
+    };
+    
+    const server = {
+        webogram: true,
+        dev: false,
+    };
+
+    const app = {
+        storage: storage
+    };
+
+    return mtproto ({
+        api,
+        server,
+        app
+    });
+};
 
 const store = new Storage();
 const data = {
@@ -41,16 +69,12 @@ class InputPeer {
 
 class TelegramClient {
 
-    constructor (apiId, apiHash, name) {
-
+    constructor (mtproto, apiId, apiHash) {
         this.apiId  = apiId || data.appId;
         this.apiHash = apiHash || data.appHash;
-        this.name = name || data.name;
         this.storage = store;
         this.createSendMessageId = (() => randomInt (11, 8000000007));
-        this.telegramMtproto = initTelegramMtproto (this.apiId,
-            this.name, store);
-        console.log(this.telegramMtproto)
+         this.telegramMtproto = initTelegramMtproto(mtproto, this.apiId, this.storage);
     }
 
     toInputPeer(peer) {
@@ -153,63 +177,21 @@ class TelegramClient {
                 })
         return history;
     }
-    /*async getAndSaveChatsData (jsonFileName = 'chats.json',
-        txtFileName = 'chats.txt') {
 
-        const chats = await this.getChats ();
-    
-        const chatsData = chats.map (chat => {
-    
-            const result = {
-            
-                display: chat.display (),
-                id: chat.id,
-                type: chat._,
-            };
-    
-            if (chat.access_hash !== undefined) {
-    
-                result.access_hash = chat.access_hash;
-            }
-    
-            return result;
-        });
-    
-        saveAsJson (jsonFileName, chatsData);
-        save (txtFileName, chatsData.reduce ((acc, val) =>
-            acc + val.type + ' ' + val.display + ' | id: ' +
-            val.id + '\r\n', 'Chats:\r\n'));
-    
-        return chatsData;
-    }*/
+    async getChannelDifference(inputChannel, options = {}) {
+        return await this.telegramMtproto("updates.getChannelDifference", {
+            channel: {
+                 ...this.toInputPeer(inputChannel), 
+                "_": "inputChannel"
+            },
+            ...options
+        })
+    }
 
     callMethod (name, options = {}) {
         return this.telegramMtproto(name, options);
     }
 
-    async chatHistory (chat) {
-    
-        const max = 400;
-        const limit = 100;
-        let offset = 0;
-        let full = [];
-        let messages = [];
-        
-        do {
-    
-            const history = await this.telegramMtproto ('messages.getHistory', {
-                peer: new InputPeer (chat),
-                max_id: offset,
-                offset: -full.length,
-                limit
-            });
-            messages = history.messages;
-            full = full.concat (messages);
-            messages.length > 0 && (offset = messages[0].id);
-        } while (messages.length === limit && full.length < max);
-        
-        return full;
-    }
     async forwardMessages (from, to, messages) {
         
         return this.telegramMtproto ('messages.forwardMessages', {
@@ -227,7 +209,7 @@ class TelegramClient {
         });
     }
 
-    async sendMessage (target, message) {     
+    sendMessage (target, message) {     
         return this.telegramMtproto ('messages.sendMessage', {
             peer: new InputPeer (target),
             random_id: this.createSendMessageId (),
@@ -240,5 +222,96 @@ class TelegramClient {
     }
 }
 
-
 export default TelegramClient;
+
+/*
+*
+* tgweb_currentUser,
+* tgweb_chatHistory,
+* tgweb_dialogs 
+*/
+function Storage(dbName = {}) {
+	this.historyDbName = dbName["chatHistory"] || "tgweb_chatHistory";
+	this.userDbName = dbName["user"] || "tgweb_currentUser";
+	this.dialogDbName = dbName["dialog"] || "tgweb_dialogs";
+	this.stateDbName = dbName["state"] || "tgweb_appState";
+}
+
+/*
+* Add extra methods to localforage
+* get, set, remove, clear
+* to be used by "mtproto"
+*/
+
+Storage.prototype.get = function(key) {
+	return localforage.getItem(key);
+}
+
+Storage.prototype.set = function(key, value) {
+	return localforage.setItem(key, value);
+}
+
+Storage.prototype.remove = function(keys) {
+	if (typeof keys === "string") {
+		keys = [keys];
+	}
+	keys.forEach(async function(key) {
+		await localforage.removeItem(key);
+	});
+}
+
+Storage.prototype.clear = function() {
+	return localforage.clear();
+}
+
+Storage.prototype.setState = function(newState) {
+	return localforage.setItem(this.stateDbName, newState);
+}
+
+Storage.prototype.getState = function() {
+	return localforage.getItem(this.stateDbName);
+}
+
+Storage.prototype.signInStatus = function() {
+	return localforage.getItem("signedin");
+}
+
+Storage.prototype.newUser = function(userObject) {
+	return localforage.setItem(this.userDbName, userObject);
+}
+
+Storage.prototype.getUser = function() {
+	return localforage.getItem(this.userDbName);
+}
+
+Storage.prototype.newDialog = function(dialogObject) {
+	return localforage.setItem(this.dialogDbName, dialogObject);
+}
+
+Storage.prototype.getDialog = function() {
+	return localforage.getItem(this.dialogDbName);
+}
+
+Storage.prototype.newHistory = function(historyObject) {
+	return localforage.setItem(this.historyDbName, historyObject);
+}
+
+Storage.prototype.getHistory = function() {
+	return localforage.getItem(this.historyDbName);
+}
+
+Storage.prototype.purgeDb = async function() {
+	/*
+	* Purge Db but preserve Auth status
+	*/
+	try {
+		let dbs = await localforage.keys();
+		dbs.forEach(async function(db) {
+			if (db.includes("channel") || db.includes("user") || db.includes("tgweb") || db.includes("chat")) {
+				await localforage.removeItem(db);
+			}
+		})
+	} catch (error) {
+		console.log(error.message);
+	}
+}

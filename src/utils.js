@@ -112,3 +112,90 @@ export function getPeerIcon(type) {
             return "info";
     }
 }
+
+export function getPeerIdKey(peerType) {
+    let key = "";
+    switch(peerType) {
+        case "peerUser":
+            key = "user_id";
+        break;
+
+        case "peerChannel":
+            key = "channel_id";
+        break;
+
+        case "peerChat":
+            key = "chat_id";
+        break;
+    }
+
+    return key;
+}
+
+export function getPeerDbName(id, type) {
+    if (Number(id)) {
+        /*
+        * peer type must be the prefix
+        */
+        return `${type}_${id}`
+    }
+    /*
+    * "id" has been mistakenly put in place of "type"
+    */
+    return `${id}_${type}`;
+}
+export function toPeerObject(id, type) {
+    let peer = {};
+    switch(type) {
+        case "channel":
+            peer["_"] = "peerChannel";
+            peer["channel_id"] = parseInt(id);
+        break;
+
+        case "user":
+            peer["_"] = "peerUser";
+            peer["user_id"] = parseInt(id);
+        break;
+        
+        case "chat":
+            peer["_"] = "peerChat";
+            peer["chat_id"] = parseInt(id);
+        break;
+    }
+
+    return peer;
+}
+
+export function getPeerUserMessages(peer, messages) {
+    let peerMessages = messages.filter(compareMessageWithPeer);
+
+    function compareMessageWithPeer(msg) {
+        let msgPeer = msg["to_id"];
+        
+        let samePeerId = (peer["user_id"] == msgPeer["user_id"]) || (peer["user_id"] == msg["from_id"]); //outgoing or incoming message
+        
+        let samePeerType = (peer["_"] || peer["type"]) === (msgPeer["_"] || msgPeer["type"]); //always true both peerUser;
+
+        return samePeerType && samePeerId;
+    }
+
+    return peerMessages; 
+}
+
+export function getPeerChatMessages(peer, messages, users) {
+    let peerMessages = messages.filter(compareMessageWithPeer);
+
+    function compareMessageWithPeer(msg) {
+        let msgPeer = msg["to_id"];
+        
+        let peerIdField = getPeerIdKey(msgPeer["_"] || msgPeer["type"]); // could be chat_id or channel_id;
+
+        let samePeerId = peer[peerIdField] == msgPeer[peerIdField]; // the value of chat_id or channel_id;
+        
+        let samePeerType = (peer["_"] || peer["type"]) === (msgPeer["_"] || msgPeer["type"]); // could be peerChat or peerChannel;
+
+        return samePeerType && samePeerId;
+    }
+
+    return peerMessages; 
+}

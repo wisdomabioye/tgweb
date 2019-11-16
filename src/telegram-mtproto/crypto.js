@@ -47,9 +47,9 @@ var taskID = 0;
 var awaiting = {};
 var webCrypto = _detectNode2.default ? false
 //eslint-disable-next-line
-: window.crypto.subtle || window.crypto.webkitSubtle //TODO remove browser depends
+: (self || window).crypto.subtle || (self || window).crypto.webkitSubtle //TODO remove browser depends
 //eslint-disable-next-line
-|| window.msCrypto && window.msCrypto.subtle;
+|| (self || window).msCrypto && (self || window).msCrypto.subtle;
 var useWebCrypto = webCrypto && !!webCrypto.digest;
 var useSha1Crypto = useWebCrypto;
 var useSha256Crypto = useWebCrypto;
@@ -65,7 +65,7 @@ var finalizeTask = (taskID, result) => {
 var isCryptoTask = (0, _both2.default)((0, _has2.default)('taskID'), (0, _has2.default)('result'));
 
 //eslint-disable-next-line
-var workerEnable = !_detectNode2.default && window.Worker;
+var workerEnable = !_detectNode2.default && (self || window).Worker;
 
 function _ref(e) {
   if (e.data === 'ready') {

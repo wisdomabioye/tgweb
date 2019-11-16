@@ -7,13 +7,26 @@ module.exports = {
 
   entry: {
     main: "./src/app.js",
+    updater: "./src/updater.js",
   },
 	output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
 	},
+
 	module: {
     rules: [
+      {
+        test: /\.worker\.js$/,
+        use: {
+          loader: 'worker-loader',
+          options: {
+            inline: false, 
+            fallback: false
+          }
+        }
+      },
+
       {
         test: [/.js$/],
         exclude: [/node_modules/],
@@ -21,11 +34,10 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: [
-              ["@babel/preset-env"],
+              ["@babel/preset-env", {modules: false}],
               // "@babel/typescript"
             ],
-            "sourceType": "unambiguous",
-
+        
             plugins: [
               
               "@babel/plugin-transform-regenerator", 
@@ -42,21 +54,16 @@ module.exports = {
           }
         }
       },
-      {
-        test: /\.worker\.js$/,
-        use: {
-          loader: "worker-loader",
-          // options: {fallback: false, inline: false}
-        }
-      }
+      
     ]
   },
   // resolve: {extensions: [".js"]},
   plugins: [
     // new WorkerPlugin({globalObject: "self"}),
     new HtmlWebpackPlugin({
+      filename: "index.html",
       template: "./src/index.html",
-      inject: true,
+      inject: false,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -65,7 +72,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: "signin.html",
       template: "./src/signin.html",
-      inject: true,
+      inject: false,
       chunks: ["signin"],
       minify: {
         removeComments: true,
@@ -73,13 +80,5 @@ module.exports = {
       }
     }),
     new CopyWebpackPlugin([{from: "./src/assets", to: "assets"}])
-  ],
-  /*devServer:{
-    contentBase: '/',
-    publicPath: '/',
-    inline: true,
-    hot: true,
-    // watchContentBase: true,
-
-  },*/
+  ]
 }

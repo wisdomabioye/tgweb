@@ -12,7 +12,7 @@ const init = (apiId, name, storage) => {
     };
     
     const server = {
-        webogram: true,
+        webogram: false,
         dev: false,
     };
 
