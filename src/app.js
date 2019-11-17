@@ -1,6 +1,5 @@
 import "@babel/polyfill";
 import moment from "moment";
-const mtproto = require ('./telegram-mtproto').MTProto;
 
 import {
 	toggleLoadingButton, 
@@ -18,7 +17,7 @@ import {
 	 } from "./utils";
 
 import TelegramClient from './tgclient';
-const client = new TelegramClient(mtproto);
+const client = new TelegramClient();
 
 
 document.addEventListener("DOMContentLoaded", async function() {
@@ -241,9 +240,17 @@ async function handleLoginCodeInput() {
 */
 function sendMessageHandler() {
 	let btn = document.getElementById("send-message-btn");
-	if (!btn) return;
+	let msgBox = document.getElementById("message-box");
+	if (!btn || !msgBox) return;
 
-	btn.addEventListener("click", async function(e) {
+	btn.addEventListener("click", msgEventHandler);
+	msgBox.addEventListener("keypress", function(e) {
+		if (e.keyCode == 13) {
+			msgEventHandler();
+		}
+	})
+
+	async function msgEventHandler() {
 		let msg = document.getElementById("message-box");
 		let peerInfo = document.getElementById("conversation-list");
 
@@ -257,7 +264,7 @@ function sendMessageHandler() {
 			*/
 			msg.value = "";
 		}
-	})
+	}
 }
 
 function setOnlineStatus() {
@@ -438,7 +445,8 @@ function singleChatListItem(chat) {
 		li.setAttribute("data-top_message", chat["top_message"]);
 		li.setAttribute("data-last_read", chat["last_read"]);
 
-	let lastMessage = getSubstring(chat["last_message"], 40);
+	let lastMessage = chat["last_message"];
+		lastMessage = lastMessage ? getSubstring(lastMessage, 40) : "<i>Media embeded</i>";
 	let name = getSubstring(chat["peerInfo"]["name"], 20);
 	let unread = buildUnreadNode(chat);
 
@@ -885,37 +893,7 @@ function handleLogout() {
 }
 
 /*
-* TODO: Optimize Worker functions
-*/
-
-function workerEntry() {
-	const UpdateWorker = new Worker ("updater.js");
-	
-	UpdateWorker.onmessage = function(event) {
-		switch(event.data) {
-			case "ready":
-				initializeAppAndRender();
-			break;
-
-			case "newState":
-				reRenderDialog();
-			break;
-			default: 
-				console.log(event.data);
-			break;
-		}
-		
-	}
-	UpdateWorker.postMessage("start");
-	UpdateWorker.onerror = function(error) {
-		console.log(error.message);
-	}
-}
-
-// workerEntry();
-
-/*
-* Work Supposed Functions
+* Worker Supposed Functions
 */
 
 async function getAndUpdateState(latestState) {
@@ -1027,7 +1005,6 @@ async function getChannelDifference(inputPeer, pts) {
 	} catch (error) {
 		console.log(error.message);
 	}
-	
 }
 
 async function handleUpdateDifference(difference) {

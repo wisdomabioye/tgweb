@@ -1,9 +1,10 @@
 import localforage from "localforage";
+import MTProto from "./telegram-mtproto";
 
 const randomInt = (minValue, maxValue) =>
     minValue + Math.floor (Math.random () * (maxValue - minValue));
 
-const initTelegramMtproto = (mtproto, apiId, storage) => {
+const initTelegramMtproto = (apiId, storage) => {
 
     const api = {
         invokeWithLayer: 0xda9b0d0d,
@@ -23,7 +24,7 @@ const initTelegramMtproto = (mtproto, apiId, storage) => {
         storage: storage
     };
 
-    return mtproto ({
+    return MTProto ({
         api,
         server,
         app
@@ -69,12 +70,12 @@ class InputPeer {
 
 class TelegramClient {
 
-    constructor (mtproto, apiId, apiHash) {
+    constructor (apiId, apiHash) {
         this.apiId  = apiId || data.appId;
         this.apiHash = apiHash || data.appHash;
         this.storage = store;
         this.createSendMessageId = (() => randomInt (11, 8000000007));
-         this.telegramMtproto = initTelegramMtproto(mtproto, this.apiId, this.storage);
+         this.telegramMtproto = initTelegramMtproto(this.apiId, this.storage);
     }
 
     toInputPeer(peer) {

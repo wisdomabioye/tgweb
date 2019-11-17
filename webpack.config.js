@@ -6,8 +6,7 @@ const WorkerPlugin = require('worker-plugin');
 module.exports = {
 
   entry: {
-    main: "./src/app.js",
-    updater: "./src/updater.js",
+    main: "./src/app.js"
   },
 	output: {
     filename: "[name].js",
@@ -16,17 +15,6 @@ module.exports = {
 
 	module: {
     rules: [
-      {
-        test: /\.worker\.js$/,
-        use: {
-          loader: 'worker-loader',
-          options: {
-            inline: false, 
-            fallback: false
-          }
-        }
-      },
-
       {
         test: [/.js$/],
         exclude: [/node_modules/],
